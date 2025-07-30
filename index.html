@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Task Manager</title>
+    <link rel="icon" type="image" href="logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, getDoc, updateDoc, deleteDoc, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Expose Firebase modules to the global scope for script.js
+        window.firebase = {
+            initializeApp,
+            getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+            getFirestore, collection, addDoc, getDocs, doc, getDoc, updateDoc, deleteDoc, onSnapshot, query, where
+        };
+    </script>
+</head>
+<body>
+
+    <header>
+        <a href="index.html"><img src="logo.png" height="75vh" width="75vh" alt="Task Logo"></a>
+        <div id="header-right">
+            <span id="userIdDisplay" class="hidden">
+                User: <span class="user-id-text"></span>
+            </span>
+            <button id="logoutButton" class="hidden header-button">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <p id="loadingMessage" class="message">Initializing application and authenticating...</p>
+
+        <!-- Authentication Section -->
+        <section id="authSection" class="page-section auth-section hidden">
+            <h2 id="authTitle" class="auth-title">Login</h2>
+            <p id="authError" class="error-message hidden"></p>
+            <form id="authForm" class="auth-form">
+                <div>
+                    <label for="authEmail">Email</label>
+                    <input type="email" id="authEmail" required>
+                </div>
+                <div>
+                    <label for="authPassword">Password</label>
+                    <input type="password" id="authPassword" required>
+                </div>
+                <button type="submit" id="authSubmitButton" class="auth-submit-button">Login</button>
+            </form>
+            <p class="auth-toggle-text">
+                Don't have an account? <a href="#" id="toggleAuthMode">Sign Up</a>
+            </p>
+        </section>
+
+        <!-- Task List Section -->
+        <section id="taskListSection" class="page-section task-list-section hidden">
+            <div class="list-header">
+                <h2>My Tasks</h2>
+                <button id="addTaskButton" class="add-task-button">
+                    Add New Task
+                </button>
+            </div>
+
+            <div class="filter-sort-controls">
+                <div class="filter-buttons">
+                    <button id="filterAll" class="filter-button active-filter">All</button>
+                    <button id="filterActive" class="filter-button">Active</button>
+                    <button id="filterCompleted" class="filter-button">Completed</button>
+                </div>
+                <select id="sortOrder" class="sort-select">
+                    <option value="createdAtDesc">Newest First</option>
+                    <option value="createdAtAsc">Oldest First</option>
+                    <option value="titleAsc">Title (A-Z)</option>
+                    <option value="titleDesc">Title (Z-A)</option>
+                </select>
+            </div>
+
+            <p id="listError" class="error-message hidden"></p>
+            <ul id="tasksList" class="tasks-list">
+                <!-- Tasks will be rendered here -->
+            </ul>
+            <p id="noTasksMessage" class="message hidden">No tasks yet. Add a new task!</p>
+        </section>
+
+        <!-- Task Form Section -->
+        <section id="taskFormSection" class="page-section task-form-section hidden">
+            <h2 id="formTitle" class="form-title"></h2>
+            <p id="formError" class="error-message hidden"></p>
+            <form id="taskForm" class="task-form">
+                <input type="hidden" id="taskIdInput">
+                <div>
+                    <label for="taskTitle">Task Title</label>
+                    <input type="text" id="taskTitle" required>
+                </div>
+                <div>
+                    <label for="taskDescription">Description (Optional)</label>
+                    <textarea id="taskDescription"></textarea>
+                </div>
+                <div>
+                    <label for="taskDueDate">Due Date (Optional)</label>
+                    <input type="date" id="taskDueDate">
+                </div>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="taskCompleted">
+                    <label for="taskCompleted">Mark as Completed</label>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" id="cancelTaskFormButton" class="cancel-button">
+                        Cancel
+                    </button>
+                    <button type="submit" id="saveTaskButton" class="save-button">
+                        Save Task
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Confirmation Modal -->
+        <div id="confirmationModal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <p id="modalMessage"></p>
+                <div class="modal-buttons">
+                    <button id="confirmCancelButton" class="cancel-button">Cancel</button>
+                    <button id="confirmDeleteButton" class="delete-button">Delete</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
