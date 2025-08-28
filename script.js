@@ -175,13 +175,13 @@ async function initializeFirebase() {
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'task-manager-1ad5f';
         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
         const firebaseConfig = {
-            apiKey: "AIzaSyAJaf_CeOUAbCvGRvCbbkOrSHh6u-Jz2GM",
-            authDomain: "task-manager-1ad5f.firebaseapp.com",
-            projectId: "task-manager-1ad5f",
-            storageBucket: "task-manager-1ad5f.firebasestorage.app",
-            messagingSenderId: "871638110787",
-            appId: "1:871638110787:web:ec6778ebc4ba4f4e7cfaf6",
-            measurementId: "G-078G8QQFDC"
+            apiKey: "AIzaSyAwR72pM7NIhrjdgwQYLkcwHLyXkM2IdCg",
+            authDomain: "taskflow-283a5.firebaseapp.com",
+            projectId: "taskflow-283a5",
+            storageBucket: "taskflow-283a5.firebasestorage.app",
+            messagingSenderId: "178065537443",
+            appId: "1:178065537443:web:756b219b7be05cbe758216",
+            measurementId: "G-XW9QZ239E5"
         };
 
         app = initializeApp(firebaseConfig);
@@ -523,3 +523,4 @@ sortOrderSelect.addEventListener('change', (e) => {
 // Task form listeners
 cancelTaskFormButton.addEventListener('click', showListView);
 taskForm.addEventListener('submit', handleTaskFormSubmit);
+
